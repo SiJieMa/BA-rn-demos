@@ -5,7 +5,7 @@ import {
     Text,
     View,
     Image,
-    Button,
+    Button,ScrollView,
     WebView,
 } from 'react-native';
 import PicCake2 from './GenCanvasPlug2/PicCake2';
@@ -33,9 +33,13 @@ var options = {
 };
 //默认应用的容器组件
 export default class CameraTest2 extends Component {
+
+    ImgData;
     //构造函数
     constructor(props) {
         super(props);
+
+
         this.state = {
             avatarSource: null,
             hasImgLoad: false,
@@ -44,15 +48,35 @@ export default class CameraTest2 extends Component {
             location: null,
             timePoint: null,
             rotate: null,
-            finalData: null,
+            finalData: "dede",
+            showImg: false,
         };
     }
+    handleImgData(datas) {
+        datas.then((result)=>{
+            console.log("chenggong"+result);
+            this.setState({
+                finalData:result,
+                showImg:true,
+            })
+            // canvas.props.handle(data);
+        },(err)=>{
+            console.log('失败'+err) //失败失败1
+        })
+    }
+
+
+    componentDidUpdate(){
+        console.log(this.state.finalData.slice(1,-1))
+    }
+
+
 
 
     //选择照片按钮点击
     choosePic() {
         ImagePicker.showImagePicker(options, (response) => {
-        if (response.data) {
+            if (response.data) {
                 console.log(response.fileSize);
             }
             if (response.didCancel) {
@@ -77,7 +101,7 @@ export default class CameraTest2 extends Component {
                     hasImgLoad: true,
                     rotate: response.isVertical,
                     hasImgGened: true,
-                    uri:source
+                    uri: source
 
                 });
 
@@ -90,14 +114,38 @@ export default class CameraTest2 extends Component {
 
     render() {
         const finalImg = this.state.hasImgLoad ?
-            <PicCake2 url={this.state.avatarSource} data={this.state.dataImg} time={this.state.timePoint}
-                      local={this.state.location} rotate={this.state.rotate}/>
-            :<Text>图片合成demo2请拍照</Text>
-            ;
+            <PicCake2  url={this.state.avatarSource} data={this.state.dataImg} handle={this.handleImgData.bind(this)}
+                       time={this.state.timePoint}
+                       local={this.state.location} rotate={this.state.rotate}/>
+            : <Text>图片合成demo2请拍照</Text>;
+
+        // const showImg = this.state.finalData?
+        // :null;
         return (
             <View style={styles.container}>
                 <Text style={styles.item} onPress={this.choosePic.bind(this)}>选择照片</Text>
+                <View style={{
+                    justifyContent:'center',
+                    alignItems:'center',}}>
+                    <Image
+                        style={{
+                            width: 176,
+                            height: 328,
+                            flexDirection:'row',
+                            resize:'contain',
+
+
+                        }}
+                        source={{
+                            uri: this.state.finalData.slice(1,-1)
+                        }}
+                    />
+                </View>
+
+
                 {finalImg}
+
+
             </View>
         );
     }
@@ -120,7 +168,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     image: {
-        height: 128,
+        height: 228,
         width: 300,
         alignSelf: 'center',
     },

@@ -5,10 +5,6 @@ import {
     createAppContainer,
        createBottomTabNavigator
 } from 'react-navigation';
-import  PopularPage from './PopularPage';
-import TrendingPage from './TrendingPage';
-import MyFavouritePage from "./MyFavouritePage";
-import MyPage from './MyPage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NavigationUtils from "../navigator/NavigationUtils";

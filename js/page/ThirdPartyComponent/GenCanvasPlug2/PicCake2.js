@@ -21,27 +21,41 @@ export default class PicCake2 extends Component {
 
     handleImageRect(canvas) {
         const image = new CanvasImage(canvas);
-        canvas.width = 395;
+        canvas.width = 355;
         canvas.height = 657;
         const dataImg = canvas.props.newdata;
-        const context = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
         image.src = 'data:image/jpeg;base64,'+dataImg;
         image.addEventListener('load', () => {
-            context.drawImage(image, 0, 0, 372, 554);
+            ctx.drawImage(image, 15, 90, 320, 550);
+            ctx.textAlign = 'left';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillStyle = '#ffffff';
+            // ctx.fillText("loaction"+li, -150,-270);
+            ctx.fillText("门店名称：屈臣氏一店测试", 15,20);
+            ctx.fillText("人员名称:业务主管", 50, 40);
+            ctx.fillText("照片区域：离店签到", 15,60);
+            ctx.fillText("时间：2019.1.1 19:20", 50,80);
+            ctx.fillText("照片类型:进店签到" ,15, 80);
+            ctx.save();
+            canvas.props.handle(canvas.toDataURL("image/jpeg", 0.1));
         });
-        console.log("导出的数据为"+canvas.toDataURL());
-    }
+
+        // canvas.toDataURL().then((data)=>{
+        //      canvas.props.handle(data);
+        //  });
 
 
-    componentDidUpdate(){
-        // console.log('数据为'+this.state.data);
+
+
     }
+
 
     render() {
 
         return (
             <View style={styles.container}>
-                    <Canvas newdata={this.props.data} ref={this.handleImageRect}/>
+                <Canvas newdata={this.props.data} handle={this.props.handle} ref={this.handleImageRect}/>
             </View>
         );
     }
@@ -50,7 +64,7 @@ export default class PicCake2 extends Component {
 const full = {
     position: 'absolute',
     top: 0,
-    left: 0,
+    left:400,
     width: '100%',
     height: '100%',
 };

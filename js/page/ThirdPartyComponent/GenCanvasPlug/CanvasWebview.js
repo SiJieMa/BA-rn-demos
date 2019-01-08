@@ -76,7 +76,7 @@ var html =
                  ctx.rotate(-90*Math.PI/180);
                  ctx.textAlign = 'left';
                  ctx.font = 'bold 16px Arial';
-                 ctx.fillStyle = '#ffffff';
+                 ctx.fillStyle = '#1d1d1d';
                  // ctx.fillText("loaction"+li, -150,-270);
                   ctx.fillText("门店名称：屈臣氏一店测试", -180,-300);
                    ctx.fillText("人员名称:业务主管", -180, -275);    
