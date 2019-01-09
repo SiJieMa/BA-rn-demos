@@ -79,7 +79,9 @@ export default class GenCanvasDemo2 extends Component {
         const { location } = this.state;
         console.log('YINDONG_location_render',location)
 
-        location.offset = geoLocationUtils.getInstance(39.136051,117.188775,location.latitude,location.longitude);
+        if (location&&location.cityCode&&location.cityCode!=undefined) {
+            location.offset = geoLocationUtils.getInstance(39.136051,117.188775,location.latitude,location.longitude);
+        }
 
         const finalImg = this.state.hasImgLoad ?
             <PicCake2 url={this.state.avatarSource} data={this.state.dataImg} handle={this.handleImgData.bind(this)}
