@@ -68,7 +68,28 @@ export default class GenCanvasDemo2 extends Component {
             this.updateLocationState(location)
         );
 
-        Geolocation.start();
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: '申请定位权限',
+                    message:
+                        '一个很牛逼的应用想申请您的定位权限',
+                    buttonNeutral: '等会再问我',
+                    buttonNegative: '不行',
+                    buttonPositive: '好的',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                Geolocation.start();
+            } else {
+                
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+
+        // Geolocation.start();
     }
 
     render() {
