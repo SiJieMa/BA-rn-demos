@@ -5,6 +5,7 @@ import {
     View,
     Image,
     ScrollView,
+    PermissionsAndroid
 } from 'react-native';
 import PicCake2 from './GenCanvasPlug2/PicCake2';
 import { Geolocation } from "react-native-amap-geolocation";
@@ -51,7 +52,7 @@ export default class GenCanvasDemo2 extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         Geolocation.init({
             ios: "e9095b2f2410226942a50557751d76b6",
             android: "6219a77021c71708b6dd394c7cd8d9cb"
