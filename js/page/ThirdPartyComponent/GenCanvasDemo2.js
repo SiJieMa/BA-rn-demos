@@ -4,10 +4,11 @@ import {
     Text,
     View,
     Image,
+    ScrollView,
 } from 'react-native';
 import PicCake2 from './GenCanvasPlug2/PicCake2';
 import { Geolocation } from "react-native-amap-geolocation";
-import geolocation from 'react-native-amap-geolocation/lib/js/geolocation';
+import geoLocationUtils from '../../CommonFunction/geoLocationUtils';
 //图片选择器
 var ImagePicker = require('react-native-image-picker');
 
@@ -66,12 +67,19 @@ export default class GenCanvasDemo2 extends Component {
         Geolocation.addLocationListener(location =>
             this.updateLocationState(location)
         );
-        
+
         Geolocation.start();
     }
 
     render() {
+        /**
+         * cLon	clat
+117.188775	39.136051
+         */
         const { location } = this.state;
+        console.log('YINDONG_location_render',location)
+
+        location.offset = geoLocationUtils.getInstance(39.136051,117.188775,location.latitude,location.longitude);
 
         const finalImg = this.state.hasImgLoad ?
             <PicCake2 url={this.state.avatarSource} data={this.state.dataImg} handle={this.handleImgData.bind(this)}
@@ -82,38 +90,43 @@ export default class GenCanvasDemo2 extends Component {
         // const showImg = this.state.finalData?
         // :null;
         return (
-            <View style={styles.container}>
-                <Text style={styles.item} onPress={this.choosePic.bind(this)}>选择照片</Text>
-                <View style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Image
-                        style={{
-                            width: 176,
-                            height: 328,
-                            flexDirection: 'row',
-                            resize: 'contain',
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text style={styles.item} onPress={this.choosePic.bind(this)}>选择照片</Text>
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Image
+                            style={{
+                                width: 176,
+                                height: 328,
+                                flexDirection: 'row',
+                                resize: 'contain',
 
 
-                        }}
-                        source={{
-                            uri: this.state.finalData.slice(1, -1)
-                        }}
-                    />
+                            }}
+                            source={{
+                                uri: this.state.finalData.slice(1, -1)
+                            }}
+                        />
 
+
+                    </View>
+
+                    {finalImg}
+
+                
+                    
+                    {Object.keys(location).map(key => (
+                        <View style={styles.item2} key={key}>
+                            <Text style={styles.label}>{key}</Text>
+                            <Text>{location[key]}</Text>
+                        </View>
+                    ))}
 
                 </View>
-
-                {finalImg}
-                {Object.keys(location).map(key => (
-                    <View style={style.item2} key={key}>
-                        <Text style={style.label}>{key}</Text>
-                        <Text>{location[key]}</Text>
-                    </View>
-                ))}
-
-            </View>
+            </ScrollView>
         );
     }
 
@@ -158,7 +171,7 @@ export default class GenCanvasDemo2 extends Component {
                 this.setState({
                     dataImg: response.data,
                     avatarSource: source,
-                    location: "经度" + response.latitude + "纬度" + response.longitude,
+                    location: {},
                     timePoint: response.timestamp,
                     hasImgLoad: true,
                     rotate: response.isVertical,

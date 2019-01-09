@@ -1,12 +1,11 @@
 import React from "react";
 import { AppRegistry, Button, StyleSheet, Text, View } from "react-native";
-// import { Geolocation } from "react-native-amap-geolocation";
+import { Geolocation } from "react-native-amap-geolocation";
 
 const style = StyleSheet.create({
     body: {
         padding: 16
     },
-
     controls: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -28,21 +27,21 @@ const style = StyleSheet.create({
 export default class LocationDemo extends React.Component {
     state = { location: {} };
 
-    // async componentDidMount() {
-    //     await Geolocation.init({
-    //         ios: "9bd6c82e77583020a73ef1af59d0c759",
-    //         android: "6219a77021c71708b6dd394c7cd8d9cb"
-    //     });
-    //     Geolocation.setOptions({
-    //         interval: 10000,
-    //         distanceFilter: 10,
-    //         background: true,
-    //         reGeocode: true
-    //     });
-    //     Geolocation.addLocationListener(location =>
-    //         this.updateLocationState(location)
-    //     );
-    // }
+    async componentDidMount() {
+        await Geolocation.init({
+            ios: "9bd6c82e77583020a73ef1af59d0c759",
+            android: "6219a77021c71708b6dd394c7cd8d9cb"
+        });
+        Geolocation.setOptions({
+            interval: 10000,
+            distanceFilter: 10,
+            background: true,
+            reGeocode: true
+        });
+        Geolocation.addLocationListener(location =>
+            this.updateLocationState(location)
+        );
+    }
 
     componentWillUnmount() {
         Geolocation.stop();

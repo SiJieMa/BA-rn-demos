@@ -3,7 +3,7 @@ export default class geoLocationUtils {
      * 
      * @param {传入的经纬度} d 
      */
-    _Rad(d) {
+    static Rad(d) {
         return d * Math.PI / 180.0;//经纬度转换成三角函数中度分表形式。
     }
 
@@ -14,11 +14,11 @@ export default class geoLocationUtils {
      * @param {原始纬度} originLatitude 
      * @param {原始经度} originLongitude 
      */
-    _getInstance(locationLatitude, locationLongitude, originLatitude, originLongitude) {
-        let radLocationLatitude = this._Rad(locationLatitude);
-        let radOriginLatitude = this._Rad(originLatitude);
-        let radLocationLongitude = this._Rad(locationLongitude);
-        let radOriginLongitude = this._Rad(originLongitude);
+    static getInstance(locationLatitude, locationLongitude, originLatitude, originLongitude) {
+        let radLocationLatitude = this.Rad(locationLatitude);
+        let radOriginLatitude = this.Rad(originLatitude);
+        let radLocationLongitude = this.Rad(locationLongitude);
+        let radOriginLongitude = this.Rad(originLongitude);
         let a = radLocationLatitude - radOriginLatitude;
         let b = radLocationLongitude - radOriginLongitude;
 
