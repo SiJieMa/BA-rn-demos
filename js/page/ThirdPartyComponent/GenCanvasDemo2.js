@@ -174,7 +174,7 @@ export default class GenCanvasDemo2 extends Component {
     choosePic() {
         ImagePicker.showImagePicker(options, (response) => {
             if (response.data) {
-                console.log('YINDONG3_response', response.fileSize);
+                
             }
             if (response.didCancel) {
 

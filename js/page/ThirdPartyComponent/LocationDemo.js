@@ -1,7 +1,22 @@
 import React from "react";
-import { AppRegistry, Button, StyleSheet, Text, View,PermissionsAndroid } from "react-native";
+import { AppRegistry, Button, StyleSheet, Text, View, PermissionsAndroid, ScrollView,Image } from "react-native";
 import { Geolocation } from "react-native-amap-geolocation";
+import Canvas from 'react-native-canvas';
 
+const Example = ({ sample, children }) => (
+    <View style={style.example}>
+        <View style={style.exampleLeft}>{children}</View>
+        <View style={style.exampleRight}>
+            <Image source={sample} style={{ width: 100, height: 100 }} />
+        </View>
+    </View>
+);
+const cell = {
+    flex: 1,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
 const style = StyleSheet.create({
     body: {
         padding: 16
@@ -21,7 +36,18 @@ const style = StyleSheet.create({
         width: 120,
         paddingRight: 10,
         textAlign: "right"
-    }
+    },
+    example: {
+        paddingBottom: 5,
+        flex: 1,
+        flexDirection: 'row',
+    },
+    exampleLeft: {
+        ...cell,
+    },
+    exampleRight: {
+        ...cell,
+    },
 });
 
 export default class LocationDemo extends React.Component {
@@ -83,29 +109,64 @@ export default class LocationDemo extends React.Component {
     getLastLocation = async () =>
         this.updateLocationState(await Geolocation.getLastLocation());
 
+    handleCanvas = (canvas) => {
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'purple';
+        ctx.fillRect(0, 0, 100, 100);
+    }
+
+    handleImageData(canvas) {        
+        canvas.width = 100;
+        canvas.height = 100;
+
+        const context = canvas.getContext('2d');
+        context.fillStyle = 'purple';
+        context.fillRect(0, 0, 100, 100);
+
+        context.getImageData(0, 0, 100, 100)
+            .then(imageData => {
+                const data = Object.values(imageData.data);
+                const length = Object.keys(data).length;
+                for (let i = 0; i < length; i += 4) {
+                    data[i] = 0;
+                    data[i + 1] = 0;
+                    data[i + 2] = 0;
+                }
+                const imgData = new ImageData(canvas, data, 100, 100);
+                context.putImageData(imgData, 0, 0);
+            });
+    }
+
     render() {
         const { location } = this.state;
         return (
-            <View style={style.body}>
-                <View style={style.controls}>
-                    <Button
-                        style={style.button}
-                        onPress={()=>this.startLocation()}
-                        title="开始定位"
-                    />
-                    <Button
-                        style={style.button}
-                        onPress={this.stopLocation}
-                        title="停止定位"
-                    />
-                </View>
-                {Object.keys(location).map(key => (
-                    <View style={style.item} key={key}>
-                        <Text style={style.label}>{key}</Text>
-                        <Text>{location[key]}</Text>
+            <ScrollView>
+
+                <View style={style.body}>
+                    <View style={style.controls}>
+                        <Button
+                            style={style.button}
+                            onPress={() => this.startLocation()}
+                            title="开始定位"
+                        />
+                        <Button
+                            style={style.button}
+                            onPress={this.stopLocation}
+                            title="停止定位"
+                        />
                     </View>
-                ))}
-            </View>
+                    {Object.keys(location).map(key => (
+                        <View style={style.item} key={key}>
+                            <Text style={style.label}>{key}</Text>
+                            <Text>{location[key]}</Text>
+                        </View>
+                    ))}
+
+                    <Example sample={{ uri: 'https://facebook.github.io/react/logo-og.png' }}>
+                        <Canvas ref={this.handleImageData} />
+                    </Example>
+                </View>
+            </ScrollView>
         );
     }
 }
