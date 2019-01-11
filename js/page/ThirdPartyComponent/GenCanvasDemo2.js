@@ -8,7 +8,7 @@ import {
     PermissionsAndroid
 } from 'react-native';
 import PicCake2 from './GenCanvasPlug2/PicCake2';
-import { Geolocation } from "react-native-amap-geolocation";
+// import { Geolocation } from "react-native-amap-geolocation";
 import geoLocationUtils from '../../CommonFunction/geoLocationUtils';
 //图片选择器
 var ImagePicker = require('react-native-image-picker');
@@ -52,46 +52,46 @@ export default class GenCanvasDemo2 extends Component {
         };
     }
 
-    async componentDidMount() {
-        Geolocation.init({
-            ios: "e9095b2f2410226942a50557751d76b6",
-            android: "6219a77021c71708b6dd394c7cd8d9cb"
-        })
+    // async componentDidMount() {
+    //     Geolocation.init({
+    //         ios: "e9095b2f2410226942a50557751d76b6",
+    //         android: "6219a77021c71708b6dd394c7cd8d9cb"
+    //     })
 
-        Geolocation.setOptions({
-            interval: 10000,
-            distanceFilter: 10,
-            background: true,
-            reGeocode: true
-        });
+    //     Geolocation.setOptions({
+    //         interval: 10000,
+    //         distanceFilter: 10,
+    //         background: true,
+    //         reGeocode: true
+    //     });
 
-        Geolocation.addLocationListener(location =>
-            this.updateLocationState(location)
-        );
+    //     Geolocation.addLocationListener(location =>
+    //         this.updateLocationState(location)
+    //     );
 
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: '申请定位权限',
-                    message:
-                        '一个很牛逼的应用想申请您的定位权限',
-                    buttonNeutral: '等会再问我',
-                    buttonNegative: '不行',
-                    buttonPositive: '好的',
-                },
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                Geolocation.start();
-            } else {
+    //     try {
+    //         const granted = await PermissionsAndroid.request(
+    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //             {
+    //                 title: '申请定位权限',
+    //                 message:
+    //                     '一个很牛逼的应用想申请您的定位权限',
+    //                 buttonNeutral: '等会再问我',
+    //                 buttonNegative: '不行',
+    //                 buttonPositive: '好的',
+    //             },
+    //         );
+    //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //             Geolocation.start();
+    //         } else {
                 
-            }
-        } catch (err) {
-            console.warn(err);
-        }
+    //         }
+    //     } catch (err) {
+    //         console.warn(err);
+    //     }
 
-        // Geolocation.start();
-    }
+    //     // Geolocation.start();
+    // }
 
     render() {
         /**
@@ -159,7 +159,7 @@ export default class GenCanvasDemo2 extends Component {
     }
 
     componentWillUnmount() {
-        Geolocation.stop();
+        // Geolocation.stop();
     }
 
     updateLocationState(location) {
